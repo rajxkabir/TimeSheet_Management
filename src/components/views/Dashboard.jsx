@@ -47,71 +47,74 @@ export function Dashboard() {
   const maxHours = Math.max(...weeklyData.map((d) => d.hours));
 
   return (
-    <div className="space-y-8">
-      {/* Page Header */}
+    <div className="space-y-10">
+      {/* Header */}
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
-        <p className="mt-1 text-muted-foreground">
-          Welcome back. Here's your weekly overview.
+        <h1 className="text-4xl font-semibold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+          Dashboard
+        </h1>
+        <p className="mt-2 text-muted-foreground">
+          Welcome back. Here's your productivity snapshot.
         </p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Stats */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.title} className="border-0 shadow-sm">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {stat.title}
-                  </p>
-                  <p className="mt-2 text-3xl font-semibold tracking-tight">
-                    {stat.value}
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {stat.change}
-                  </p>
-                </div>
-                <div className="rounded-xl bg-secondary p-3">
-                  <stat.icon className="w-5 h-5 text-foreground" />
-                </div>
+          <div
+            key={stat.title}
+            className="group relative overflow-hidden rounded-2xl border border-border bg-card/60 backdrop-blur-xl p-6 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">{stat.title}</p>
+                <p className="mt-3 text-3xl font-bold tracking-tight">
+                  {stat.value}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {stat.change}
+                </p>
               </div>
-            </CardContent>
-          </Card>
+              <div className="p-3 rounded-xl bg-gradient-to-br from-accent to-accent/60 text-white shadow-md group-hover:scale-110 transition-transform">
+                <stat.icon className="w-5 h-5" />
+              </div>
+            </div>
+
+            {/* Glow Effect */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-r from-transparent via-accent/10 to-transparent" />
+          </div>
         ))}
       </div>
 
-      {/* Charts Row */}
+      {/* Charts + Activity */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Weekly Hours Chart */}
-        <Card className="border-0 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-medium">Weekly Hours</CardTitle>
+        {/* Chart */}
+        <Card className="border border-border bg-card/60 backdrop-blur-xl shadow-sm">
+          <CardHeader>
+            <CardTitle>Weekly Activity</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-end justify-between gap-2 h-48 pt-4">
+            <div className="flex items-end justify-between gap-3 h-52">
               {weeklyData.map((day) => (
                 <div
                   key={day.day}
-                  className="flex flex-1 flex-col items-center gap-2"
+                  className="flex flex-1 flex-col items-center gap-2 group"
                 >
-                  <div className="relative w-full flex items-end justify-center h-36">
+                  <div className="relative w-full flex items-end justify-center h-40">
                     <div
-                      className="w-full max-w-12 rounded-t-lg bg-foreground/10 transition-all hover:bg-foreground/20"
+                      className="w-full max-w-10 rounded-xl bg-gradient-to-t from-accent to-accent/40 transition-all duration-300 group-hover:scale-105"
                       style={{
                         height: `${(day.hours / maxHours) * 100}%`,
-                        minHeight: day.hours > 0 ? "8px" : "0",
+                        minHeight: day.hours > 0 ? "10px" : "0",
                       }}
-                    >
-                      {day.hours > 0 && (
-                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-medium text-muted-foreground">
-                          {day.hours}h
-                        </div>
-                      )}
-                    </div>
+                    />
+                    {day.hours > 0 && (
+                      <span className="absolute -top-6 text-xs text-muted-foreground">
+                        {day.hours}h
+                      </span>
+                    )}
                   </div>
-                  <span className="text-xs font-medium text-muted-foreground">
+                  <span className="text-xs text-muted-foreground">
                     {day.day}
                   </span>
                 </div>
@@ -120,27 +123,29 @@ export function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* Recent Entries */}
-        <Card className="border-0 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-medium">Recent Entries</CardTitle>
+        {/* Activity */}
+        <Card className="border border-border bg-card/60 backdrop-blur-xl shadow-sm">
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {recentEntries.map((entry, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between rounded-xl bg-secondary/50 p-4 transition-colors hover:bg-secondary"
+                  className="flex items-center justify-between rounded-xl border border-border/50 bg-secondary/40 p-4 transition-all hover:bg-secondary hover:shadow-md"
                 >
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium truncate">{entry.project}</p>
-                    <p className="text-sm text-muted-foreground truncate">
+                  <div>
+                    <p className="font-medium">{entry.project}</p>
+                    <p className="text-sm text-muted-foreground">
                       {entry.task}
                     </p>
                   </div>
-                  <div className="text-right ml-4">
+                  <div className="text-right">
                     <p className="font-semibold">{entry.hours}h</p>
-                    <p className="text-xs text-muted-foreground">{entry.date}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {entry.date}
+                    </p>
                   </div>
                 </div>
               ))}
