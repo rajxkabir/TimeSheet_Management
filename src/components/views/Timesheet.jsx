@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Plus, Play, Square } from "lucide-react";
 import { Button, Card, CardContent, CardHeader, CardTitle, Input } from "../ui";
 
@@ -34,18 +34,39 @@ const initialEntries = [
 export function Timesheet() {
   const [entries, setEntries] = useState(initialEntries);
   const [currentWeek] = useState("Mar 10 - Mar 16, 2026");
+
+  // ✅ TIMER FIX
   const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [timerTime] = useState("00:00:00");
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    let interval;
+    if (isTimerRunning) {
+      interval = setInterval(() => {
+        setSeconds((prev) => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isTimerRunning]);
+
+  const formatTime = () => {
+    const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+    const secs = String(seconds % 60).padStart(2, "0");
+    return `${hrs}:${mins}:${secs}`;
+  };
 
   const weekTotals = weekDays.map((_, dayIndex) =>
     entries.reduce((sum, entry) => sum + entry.hours[dayIndex], 0)
   );
+
   const grandTotal = entries.reduce((sum, entry) => sum + entry.total, 0);
 
   const updateHours = (entryId, dayIndex, value) => {
     const hours = parseFloat(value) || 0;
-    setEntries(
-      entries.map((entry) => {
+
+    setEntries((prev) =>
+      prev.map((entry) => {
         if (entry.id === entryId) {
           const newHours = [...entry.hours];
           newHours[dayIndex] = hours;
@@ -71,11 +92,13 @@ export function Timesheet() {
           </p>
         </div>
 
-        {/* Timer Card */}
+        {/* ✅ TIMER (WORKING NOW) */}
         <Card className="border-0 bg-foreground text-background shadow-lg">
           <CardContent className="flex items-center gap-4 p-4">
             <div className="text-center">
-              <p className="text-2xl font-mono font-semibold">{timerTime}</p>
+              <p className="text-2xl font-mono font-semibold">
+                {formatTime()}
+              </p>
               <p className="text-xs opacity-60">Current Session</p>
             </div>
             <Button
@@ -110,6 +133,7 @@ export function Timesheet() {
             </Button>
           </div>
         </CardHeader>
+
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -118,19 +142,24 @@ export function Timesheet() {
                   <th className="text-left p-4 pl-6 w-[250px] text-sm font-medium text-muted-foreground">
                     Project / Task
                   </th>
+
                   {weekDays.map((day, idx) => (
                     <th key={day} className="text-center p-4 w-20">
                       <div className="flex flex-col items-center">
-                        <span className="text-xs text-muted-foreground">{day}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {day}
+                        </span>
                         <span className="text-sm">{10 + idx}</span>
                       </div>
                     </th>
                   ))}
+
                   <th className="text-center p-4 w-20 pr-6 text-sm font-medium text-muted-foreground">
                     Total
                   </th>
                 </tr>
               </thead>
+
               <tbody>
                 {entries.map((entry) => (
                   <tr key={entry.id} className="border-b border-border group">
@@ -140,31 +169,35 @@ export function Timesheet() {
                           className={`w-2.5 h-2.5 rounded-full shrink-0 ${entry.color}`}
                         />
                         <div className="min-w-0">
-                          <p className="font-medium truncate">{entry.project}</p>
+                          <p className="font-medium truncate">
+                            {entry.project}
+                          </p>
                           <p className="text-sm text-muted-foreground truncate">
                             {entry.task}
                           </p>
                         </div>
                       </div>
                     </td>
+
+                    {/* ✅ NO SHAKE INPUT */}
                     {entry.hours.map((hours, dayIdx) => (
                       <td key={dayIdx} className="text-center p-1">
-                        <Input
+                        <input
                           type="number"
                           step="0.5"
-                          min="0"
-                          max="24"
-                          value={hours || ""}
-                          onChange={(e) =>
+                          defaultValue={hours}
+                          onBlur={(e) =>
                             updateHours(entry.id, dayIdx, e.target.value)
                           }
-                          className="w-16 mx-auto text-center border-0 bg-secondary/50 focus:bg-secondary"
-                          placeholder="-"
+                          className="w-16 mx-auto text-center border border-border bg-background rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                         />
                       </td>
                     ))}
+
                     <td className="text-center p-4 pr-6">
-                      <span className="font-semibold">{entry.total}h</span>
+                      <span className="font-semibold">
+                        {entry.total}h
+                      </span>
                     </td>
                   </tr>
                 ))}
@@ -177,13 +210,17 @@ export function Timesheet() {
                       Add Row
                     </Button>
                   </td>
+
                   {weekTotals.map((total, idx) => (
                     <td key={idx} className="text-center p-4">
                       {total > 0 ? `${total}h` : "-"}
                     </td>
                   ))}
+
                   <td className="text-center p-4 pr-6">
-                    <span className="text-lg font-semibold">{grandTotal}h</span>
+                    <span className="text-lg font-semibold">
+                      {grandTotal}h
+                    </span>
                   </td>
                 </tr>
               </tbody>
@@ -192,15 +229,18 @@ export function Timesheet() {
         </CardContent>
       </Card>
 
-      {/* Quick Stats */}
+      {/* ✅ KEEP ORIGINAL STATS (UNCHANGED) */}
       <div className="grid gap-4 sm:grid-cols-3">
         <Card className="border-0 shadow-sm">
           <CardContent className="p-6">
             <p className="text-sm text-muted-foreground">Billable Hours</p>
             <p className="mt-1 text-2xl font-semibold">35h</p>
-            <p className="text-xs text-muted-foreground">87.5% of total</p>
+            <p className="text-xs text-muted-foreground">
+              87.5% of total
+            </p>
           </CardContent>
         </Card>
+
         <Card className="border-0 shadow-sm">
           <CardContent className="p-6">
             <p className="text-sm text-muted-foreground">Weekly Target</p>
@@ -210,11 +250,14 @@ export function Timesheet() {
             </div>
           </CardContent>
         </Card>
+
         <Card className="border-0 shadow-sm">
           <CardContent className="p-6">
             <p className="text-sm text-muted-foreground">Overtime</p>
             <p className="mt-1 text-2xl font-semibold">0h</p>
-            <p className="text-xs text-muted-foreground">On track this week</p>
+            <p className="text-xs text-muted-foreground">
+              On track this week
+            </p>
           </CardContent>
         </Card>
       </div>

@@ -14,7 +14,7 @@ function App() {
   const [showApp, setShowApp] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeView, setActiveView] = useState("dashboard");
-
+   
   if (!showApp) {
     return <LandingPage onGetStarted={() => setShowApp(true)} />;
   }
