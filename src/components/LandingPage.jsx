@@ -1,4 +1,5 @@
 import { Button } from "./ui";
+import { useNavigate } from "react-router-dom";
 import {
     Clock,
     BarChart3,
@@ -11,7 +12,13 @@ import {
     Globe,
 } from "lucide-react";
 
-export function LandingPage({ onGetStarted }) {
+export function LandingPage() {
+    const navigate = useNavigate();
+
+    const handleStart = () => {
+        navigate("/login");
+    };
+
     const features = [
         {
             icon: Clock,
@@ -81,13 +88,13 @@ export function LandingPage({ onGetStarted }) {
                         </a>
                     </div>
 
-                    <Button onClick={onGetStarted} size="sm">
+                    <Button onClick={handleStart} size="sm">
                         Get Started
                     </Button>
                 </div>
             </nav>
 
-            {/* Hero Section */}
+            {/* Hero */}
             <section className="pt-32 pb-20 px-6">
                 <div className="max-w-4xl mx-auto text-center">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted text-sm text-muted-foreground mb-6">
@@ -107,7 +114,7 @@ export function LandingPage({ onGetStarted }) {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Button size="lg" onClick={onGetStarted} className="gap-2 px-8">
+                        <Button size="lg" onClick={handleStart} className="gap-2 px-8">
                             Start Free Trial
                             <ArrowRight className="w-4 h-4" />
                         </Button>
@@ -177,13 +184,12 @@ export function LandingPage({ onGetStarted }) {
             {/* Pricing */}
             <section id="pricing" className="py-20 px-6 bg-muted/30">
                 <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
-
                     <div className="bg-card p-8 rounded-2xl border">
                         <h3 className="text-lg font-semibold mb-2">Free</h3>
                         <p className="mb-4 text-muted-foreground">Perfect for individuals</p>
                         <p className="text-3xl font-semibold mb-6">$0/month</p>
 
-                        <Button onClick={onGetStarted} className="w-full">
+                        <Button onClick={handleStart} className="w-full">
                             Get Started
                         </Button>
                     </div>
@@ -193,17 +199,16 @@ export function LandingPage({ onGetStarted }) {
                         <p className="mb-4 text-background/70">For teams</p>
                         <p className="text-3xl font-semibold mb-6">$12/user</p>
 
-                        <Button onClick={onGetStarted} variant="secondary" className="w-full">
+                        <Button onClick={handleStart} variant="secondary" className="w-full">
                             Start Free Trial
                         </Button>
                     </div>
-
                 </div>
             </section>
 
             {/* CTA */}
             <section className="py-20 text-center">
-                <Button size="lg" onClick={onGetStarted} className="gap-2 px-8">
+                <Button size="lg" onClick={handleStart} className="gap-2 px-8">
                     Get Started Free
                     <ArrowRight className="w-4 h-4" />
                 </Button>

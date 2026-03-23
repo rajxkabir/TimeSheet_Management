@@ -1,4 +1,14 @@
-﻿import { LandingPage } from "./components/LandingPage";
+﻿import {
+    BrowserRouter,
+    Routes,
+    Route,
+    useLocation,
+    useNavigate,
+    Navigate,
+} from "react-router-dom";
+import { useState } from "react";
+
+import { LandingPage } from "./components/LandingPage";
 import { Navbar } from "./components/Navbar";
 import { Sidebar } from "./components/Sidebar";
 import { Dashboard } from "./components/views/Dashboard";
@@ -7,60 +17,28 @@ import { Projects } from "./components/views/Projects";
 import { Team } from "./components/views/Team";
 import { Reports } from "./components/views/Reports";
 import { cn } from "./lib/utils";
-import { useState } from "react";
 import Login from "./components/Login";
 
-function App() {
-    const [showApp, setShowApp] = useState(false);
+/* ================= LAYOUT ================= */
+function AppLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [activeView, setActiveView] = useState("login");
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    // 👉 Landing Page first
-    if (!showApp) {
-        return (
-            <LandingPage
-                onGetStarted={() => {
-                    setShowApp(true);
-                    setActiveView("login");
-                }}
-            />
-        );
-    }
+    const path = location.pathname;
+
+    // Hide layout on public pages
+    const hideLayout = path === "/" || path === "/login";
 
     const handleViewChange = (view) => {
-        setActiveView(view);
+        navigate(`/${view}`);
         setSidebarOpen(false);
-    };
-
-    const renderView = () => {
-        switch (activeView) {
-            case "login":
-                return <Login onLogin={() => setActiveView("dashboard")} />;
-
-            case "dashboard":
-                return <Dashboard />;
-
-            case "timesheet":
-                return <Timesheet />;
-
-            case "projects":
-                return <Projects />;
-
-            case "team":
-                return <Team />;
-
-            case "reports":
-                return <Reports />;
-
-            default:
-                return <Dashboard />;
-        }
     };
 
     return (
         <div className="min-h-screen bg-background">
-            {/* ❌ Hide Navbar/Sidebar on login */}
-            {activeView !== "login" && (
+            {/* Navbar + Sidebar */}
+            {!hideLayout && (
                 <>
                     <Navbar
                         onMenuClick={() => setSidebarOpen(!sidebarOpen)}
@@ -69,22 +47,69 @@ function App() {
 
                     <Sidebar
                         isOpen={sidebarOpen}
-                        activeView={activeView}
+                        activeView={path.split("/")[1]} // better than replace
                         onViewChange={handleViewChange}
                     />
                 </>
             )}
 
+            {/* Main Content */}
             <main
                 className={cn(
-                    activeView !== "login" && "pt-14 md:pl-64",
+                    !hideLayout && "pt-14 md:pl-64",
                     "transition-all duration-300"
                 )}
             >
-                <div className="p-6 md:p-8 lg:p-10">{renderView()}</div>
+                <div className="p-6 md:p-8 lg:p-10">
+                    <Routes>
+                        {/* Public Routes */}
+                        <Route path="/" element={<LandingPageWrapper />} />
+                        <Route path="/login" element={<LoginWrapper />} />
+
+                        {/* App Routes */}
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/timesheet" element={<Timesheet />} />
+                        <Route path="/projects" element={<Projects />} />
+                        <Route path="/team" element={<Team />} />
+                        <Route path="/reports" element={<Reports />} />
+
+                        {/* Default fallback */}
+                        <Route path="*" element={<Navigate to="/" />} />
+                    </Routes>
+                </div>
             </main>
         </div>
     );
 }
 
-export default App;
+/* ================= WRAPPERS ================= */
+
+function LandingPageWrapper() {
+    const navigate = useNavigate();
+
+    return (
+        <LandingPage
+            onGetStarted={() => navigate("/login")}
+        />
+    );
+}
+
+function LoginWrapper() {
+    const navigate = useNavigate();
+
+    return (
+        <Login
+            onLogin={() => navigate("/dashboard", { replace: true })}
+        />
+    );
+}
+
+/* ================= ROOT ================= */
+
+export default function App() {
+    return (
+        
+            <AppLayout />
+      
+    );
+}

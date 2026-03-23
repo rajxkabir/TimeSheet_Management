@@ -1,266 +1,230 @@
 ﻿import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Plus, Play, Square } from "lucide-react";
-import { Button, Card, CardContent, CardHeader, CardTitle, Input } from "../ui";
+import {
+    ChevronLeft,
+    ChevronRight,
+    Plus,
+    Play,
+    Square,
+    RotateCcw,
+} from "lucide-react";
+import {
+    Button,
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from "../ui";
+import { cn } from "../../lib/utils";
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const initialEntries = [
-  {
-    id: 1,
-    project: "Website Redesign",
-    task: "Homepage UI Design",
-    hours: [3.5, 4.0, 2.5, 3.0, 2.0, 0, 0],
-    total: 15,
-    color: "bg-accent",
-  },
-  {
-    id: 2,
-    project: "Mobile App",
-    task: "API Integration",
-    hours: [2.0, 3.5, 4.0, 2.5, 3.0, 0, 0],
-    total: 15,
-    color: "bg-green-500",
-  },
-  {
-    id: 3,
-    project: "API Development",
-    task: "Authentication Module",
-    hours: [3.0, 0, 2.5, 2.0, 2.5, 0, 0],
-    total: 10,
-    color: "bg-cyan-500",
-  },
+    {
+        id: 1,
+        project: "Website Redesign",
+        task: "Homepage UI Design",
+        hours: [3.5, 4, 2.5, 3, 2, 0, 0],
+        total: 15,
+        color: "bg-accent",
+    },
 ];
 
 export function Timesheet() {
-  const [entries, setEntries] = useState(initialEntries);
-  const [currentWeek] = useState("Mar 10 - Mar 16, 2026");
+    const [entries, setEntries] = useState(initialEntries);
+    const [seconds, setSeconds] = useState(0);
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
 
-  // ✅ TIMER FIX
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [seconds, setSeconds] = useState(0);
+    /* ---------------- TIMER ---------------- */
+    useEffect(() => {
+        if (!isTimerRunning) return;
 
-  useEffect(() => {
-    let interval;
-    if (isTimerRunning) {
-      interval = setInterval(() => {
-        setSeconds((prev) => prev + 1);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isTimerRunning]);
+        const interval = setInterval(() => {
+            setSeconds((prev) => prev + 1);
+        }, 1000);
 
-  const formatTime = () => {
-    const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
-    const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
-    const secs = String(seconds % 60).padStart(2, "0");
-    return `${hrs}:${mins}:${secs}`;
-  };
+        return () => clearInterval(interval);
+    }, [isTimerRunning]);
 
-  const weekTotals = weekDays.map((_, dayIndex) =>
-    entries.reduce((sum, entry) => sum + entry.hours[dayIndex], 0)
-  );
+    const formatTime = () => {
+        const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
+        const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+        const secs = String(seconds % 60).padStart(2, "0");
+        return `${hrs}:${mins}:${secs}`;
+    };
 
-  const grandTotal = entries.reduce((sum, entry) => sum + entry.total, 0);
+    const resetTimer = () => {
+        setSeconds(0);
+        setIsTimerRunning(false);
+    };
 
-  const updateHours = (entryId, dayIndex, value) => {
-    const hours = parseFloat(value) || 0;
-
-    setEntries((prev) =>
-      prev.map((entry) => {
-        if (entry.id === entryId) {
-          const newHours = [...entry.hours];
-          newHours[dayIndex] = hours;
-          return {
-            ...entry,
-            hours: newHours,
-            total: newHours.reduce((sum, h) => sum + h, 0),
-          };
-        }
-        return entry;
-      })
+    /* ---------------- CALCULATIONS ---------------- */
+    const weekTotals = weekDays.map((_, i) =>
+        entries.reduce((sum, e) => sum + e.hours[i], 0)
     );
-  };
 
-  return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Timesheet</h1>
-          <p className="mt-1 text-muted-foreground">
-            Track and manage your work hours
-          </p>
-        </div>
+    const grandTotal = entries.reduce((sum, e) => sum + e.total, 0);
 
-        {/* ✅ TIMER (WORKING NOW) */}
-        <Card className="border-0 bg-foreground text-background shadow-lg">
-          <CardContent className="flex items-center gap-4 p-4">
-            <div className="text-center">
-              <p className="text-2xl font-mono font-semibold">
-                {formatTime()}
-              </p>
-              <p className="text-xs opacity-60">Current Session</p>
-            </div>
-            <Button
-              size="icon"
-              variant="secondary"
-              className="w-12 h-12 rounded-full bg-background text-foreground hover:bg-background/90"
-              onClick={() => setIsTimerRunning(!isTimerRunning)}
-            >
-              {isTimerRunning ? (
-                <Square className="w-5 h-5" />
-              ) : (
-                <Play className="w-5 h-5 ml-0.5" />
-              )}
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+    /* ---------------- UPDATE HOURS ---------------- */
+    const updateHours = (entryId, dayIndex, value) => {
+        const num = parseFloat(value) || 0;
 
-      {/* Week Navigation */}
-      <Card className="border-0 shadow-sm">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-          <CardTitle className="text-base font-medium">Weekly View</CardTitle>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon-sm">
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
-            <span className="min-w-[180px] text-center text-sm font-medium">
-              {currentWeek}
-            </span>
-            <Button variant="ghost" size="icon-sm">
-              <ChevronRight className="w-4 h-4" />
-            </Button>
-          </div>
-        </CardHeader>
+        setEntries((prev) =>
+            prev.map((entry) => {
+                if (entry.id !== entryId) return entry;
 
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="text-left p-4 pl-6 w-[250px] text-sm font-medium text-muted-foreground">
-                    Project / Task
-                  </th>
+                const newHours = [...entry.hours];
+                newHours[dayIndex] = num;
 
-                  {weekDays.map((day, idx) => (
-                    <th key={day} className="text-center p-4 w-20">
-                      <div className="flex flex-col items-center">
-                        <span className="text-xs text-muted-foreground">
-                          {day}
-                        </span>
-                        <span className="text-sm">{10 + idx}</span>
-                      </div>
-                    </th>
-                  ))}
+                return {
+                    ...entry,
+                    hours: newHours,
+                    total: newHours.reduce((a, b) => a + b, 0),
+                };
+            })
+        );
+    };
 
-                  <th className="text-center p-4 w-20 pr-6 text-sm font-medium text-muted-foreground">
-                    Total
-                  </th>
-                </tr>
-              </thead>
+    return (
+        <div className="space-y-10">
+            {/* Header */}
+            <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
+                <div>
+                    <h1 className="text-4xl font-semibold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+                        Timesheet
+                    </h1>
+                    <p className="mt-2 text-muted-foreground">
+                        Track and manage your working hours.
+                    </p>
+                </div>
 
-              <tbody>
-                {entries.map((entry) => (
-                  <tr key={entry.id} className="border-b border-border group">
-                    <td className="p-4 pl-6">
-                      <div className="flex items-center gap-3">
-                        <span
-                          className={`w-2.5 h-2.5 rounded-full shrink-0 ${entry.color}`}
-                        />
-                        <div className="min-w-0">
-                          <p className="font-medium truncate">
-                            {entry.project}
-                          </p>
-                          <p className="text-sm text-muted-foreground truncate">
-                            {entry.task}
-                          </p>
+                {/* TIMER */}
+                <Card className="bg-foreground text-background shadow-xl">
+                    <CardContent className="flex items-center gap-4 p-4">
+                        <div className="text-center">
+                            <p className="text-2xl font-mono font-semibold">
+                                {formatTime()}
+                            </p>
+                            <p className="text-xs opacity-60">Current Session</p>
                         </div>
-                      </div>
-                    </td>
 
-                    {/* ✅ NO SHAKE INPUT */}
-                    {entry.hours.map((hours, dayIdx) => (
-                      <td key={dayIdx} className="text-center p-1">
-                        <input
-                          type="number"
-                          step="0.5"
-                          defaultValue={hours}
-                          onBlur={(e) =>
-                            updateHours(entry.id, dayIdx, e.target.value)
-                          }
-                          className="w-16 mx-auto text-center border border-border bg-background rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-                        />
-                      </td>
-                    ))}
+                        <div className="flex gap-2">
+                            <Button
+                                size="icon"
+                                variant="secondary"
+                                onClick={() => setIsTimerRunning(!isTimerRunning)}
+                            >
+                                {isTimerRunning ? (
+                                    <Square className="w-4 h-4" />
+                                ) : (
+                                    <Play className="w-4 h-4" />
+                                )}
+                            </Button>
 
-                    <td className="text-center p-4 pr-6">
-                      <span className="font-semibold">
-                        {entry.total}h
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-
-                {/* Totals Row */}
-                <tr className="bg-secondary/30 font-medium">
-                  <td className="p-4 pl-6">
-                    <Button variant="ghost" size="sm" className="gap-2 -ml-2">
-                      <Plus className="w-4 h-4" />
-                      Add Row
-                    </Button>
-                  </td>
-
-                  {weekTotals.map((total, idx) => (
-                    <td key={idx} className="text-center p-4">
-                      {total > 0 ? `${total}h` : "-"}
-                    </td>
-                  ))}
-
-                  <td className="text-center p-4 pr-6">
-                    <span className="text-lg font-semibold">
-                      {grandTotal}h
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* ✅ KEEP ORIGINAL STATS (UNCHANGED) */}
-      <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-6">
-            <p className="text-sm text-muted-foreground">Billable Hours</p>
-            <p className="mt-1 text-2xl font-semibold">35h</p>
-            <p className="text-xs text-muted-foreground">
-              87.5% of total
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-6">
-            <p className="text-sm text-muted-foreground">Weekly Target</p>
-            <p className="mt-1 text-2xl font-semibold">40h</p>
-            <div className="mt-2 h-1.5 w-full rounded-full bg-secondary">
-              <div className="h-full w-[87%] rounded-full bg-foreground" />
+                            <Button size="icon" variant="secondary" onClick={resetTimer}>
+                                <RotateCcw className="w-4 h-4" />
+                            </Button>
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
-          </CardContent>
-        </Card>
 
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-6">
-            <p className="text-sm text-muted-foreground">Overtime</p>
-            <p className="mt-1 text-2xl font-semibold">0h</p>
-            <p className="text-xs text-muted-foreground">
-              On track this week
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+            {/* TABLE */}
+            <Card className="border border-border bg-card/60 backdrop-blur-xl shadow-sm">
+                <CardHeader className="flex flex-row justify-between">
+                    <CardTitle>Weekly Timesheet</CardTitle>
+
+                    <div className="flex items-center gap-2">
+                        <Button variant="ghost" size="icon">
+                            <ChevronLeft />
+                        </Button>
+                        <span className="text-sm">Mar 10 - Mar 16</span>
+                        <Button variant="ghost" size="icon">
+                            <ChevronRight />
+                        </Button>
+                    </div>
+                </CardHeader>
+
+                <CardContent className="p-0 overflow-x-auto">
+                    <table className="w-full">
+                        <thead>
+                            <tr className="border-b border-border text-sm text-muted-foreground">
+                                <th className="p-4 text-left pl-6">Task</th>
+
+                                {weekDays.map((d) => (
+                                    <th key={d} className="text-center p-4">
+                                        {d}
+                                    </th>
+                                ))}
+
+                                <th className="p-4 text-center pr-6">Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {entries.map((entry) => (
+                                <tr
+                                    key={entry.id}
+                                    className="border-b border-border hover:bg-secondary/40 transition"
+                                >
+                                    <td className="p-4 pl-6">
+                                        <div className="flex items-center gap-3">
+                                            <span
+                                                className={cn(
+                                                    "w-2.5 h-2.5 rounded-full",
+                                                    entry.color
+                                                )}
+                                            />
+                                            <div>
+                                                <p className="font-medium">{entry.project}</p>
+                                                <p className="text-sm text-muted-foreground">
+                                                    {entry.task}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    {entry.hours.map((h, i) => (
+                                        <td key={i} className="p-2 text-center">
+                                            <input
+                                                type="number"
+                                                value={h}
+                                                onChange={(e) =>
+                                                    updateHours(entry.id, i, e.target.value)
+                                                }
+                                                className="w-16 text-center border border-border rounded-md bg-background px-2 py-1 text-sm focus:ring-2 focus:ring-accent"
+                                            />
+                                        </td>
+                                    ))}
+
+                                    <td className="text-center font-semibold pr-6">
+                                        {entry.total}h
+                                    </td>
+                                </tr>
+                            ))}
+
+                            {/* TOTAL ROW */}
+                            <tr className="bg-secondary/30 font-medium">
+                                <td className="p-4 pl-6">
+                                    <Button variant="ghost" size="sm" className="gap-2">
+                                        <Plus className="w-4 h-4" />
+                                        Add Row
+                                    </Button>
+                                </td>
+
+                                {weekTotals.map((t, i) => (
+                                    <td key={i} className="text-center">
+                                        {t ? `${t}h` : "-"}
+                                    </td>
+                                ))}
+
+                                <td className="text-center font-bold pr-6">
+                                    {grandTotal}h
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </CardContent>
+            </Card>
+        </div>
+    );
 }
