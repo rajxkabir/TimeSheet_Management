@@ -76,10 +76,7 @@ export default function Login() {
 
                     {/* Options */}
                     <div className="flex items-center justify-between text-sm">
-                        <label className="flex items-center gap-2 text-muted-foreground">
-                            <input type="checkbox" className="accent-accent" />
-                            Remember me
-                        </label>
+                     
 
                         <span className="text-accent cursor-pointer hover:underline">
                             Forgot password?

@@ -216,7 +216,7 @@ export function LandingPage() {
 
             {/* Footer */}
             <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
-                © 2024 Trackora. All rights reserved.
+                © 2026 Trackora. All rights reserved.
             </footer>
         </div>
     );
