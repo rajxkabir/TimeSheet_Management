@@ -1,4 +1,4 @@
-import { LandingPage } from "./components/LandingPage";
+﻿import { LandingPage } from "./components/LandingPage";
 import { Navbar } from "./components/Navbar";
 import { Sidebar } from "./components/Sidebar";
 import { Dashboard } from "./components/views/Dashboard";
@@ -8,62 +8,83 @@ import { Team } from "./components/views/Team";
 import { Reports } from "./components/views/Reports";
 import { cn } from "./lib/utils";
 import { useState } from "react";
-
+import Login from "./components/Login";
 
 function App() {
-  const [showApp, setShowApp] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeView, setActiveView] = useState("dashboard");
-   
-  if (!showApp) {
-    return <LandingPage onGetStarted={() => setShowApp(true)} />;
-  }
+    const [showApp, setShowApp] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [activeView, setActiveView] = useState("login");
 
-  const handleViewChange = (view) => {
-    setActiveView(view);
-    setSidebarOpen(false);
-  };
-
-  const renderView = () => {
-    switch (activeView) {
-      case "dashboard":
-        return <Dashboard />;
-      case "timesheet":
-        return <Timesheet />;
-      case "projects":
-        return <Projects />;
-      case "team":
-        return <Team />;
-      case "reports":
-        return <Reports />;
-      default:
-        return <Dashboard />;
+    // 👉 Landing Page first
+    if (!showApp) {
+        return (
+            <LandingPage
+                onGetStarted={() => {
+                    setShowApp(true);
+                    setActiveView("login");
+                }}
+            />
+        );
     }
-  };
 
-  return (
-    <div className="min-h-screen bg-background">
-      <Navbar
-        onMenuClick={() => setSidebarOpen(!sidebarOpen)}
-        isSidebarOpen={sidebarOpen}
-      />
+    const handleViewChange = (view) => {
+        setActiveView(view);
+        setSidebarOpen(false);
+    };
 
-      <Sidebar
-        isOpen={sidebarOpen}
-        activeView={activeView}
-        onViewChange={handleViewChange}
-      />
+    const renderView = () => {
+        switch (activeView) {
+            case "login":
+                return <Login onLogin={() => setActiveView("dashboard")} />;
 
-      <main
-        className={cn(
-          "pt-14 transition-all duration-300 ease-in-out",
-          "md:pl-64"
-        )}
-      >
-        <div className="p-6 md:p-8 lg:p-10">{renderView()}</div>
-      </main>
-    </div>
-  );
+            case "dashboard":
+                return <Dashboard />;
+
+            case "timesheet":
+                return <Timesheet />;
+
+            case "projects":
+                return <Projects />;
+
+            case "team":
+                return <Team />;
+
+            case "reports":
+                return <Reports />;
+
+            default:
+                return <Dashboard />;
+        }
+    };
+
+    return (
+        <div className="min-h-screen bg-background">
+            {/* ❌ Hide Navbar/Sidebar on login */}
+            {activeView !== "login" && (
+                <>
+                    <Navbar
+                        onMenuClick={() => setSidebarOpen(!sidebarOpen)}
+                        isSidebarOpen={sidebarOpen}
+                    />
+
+                    <Sidebar
+                        isOpen={sidebarOpen}
+                        activeView={activeView}
+                        onViewChange={handleViewChange}
+                    />
+                </>
+            )}
+
+            <main
+                className={cn(
+                    activeView !== "login" && "pt-14 md:pl-64",
+                    "transition-all duration-300"
+                )}
+            >
+                <div className="p-6 md:p-8 lg:p-10">{renderView()}</div>
+            </main>
+        </div>
+    );
 }
 
 export default App;
