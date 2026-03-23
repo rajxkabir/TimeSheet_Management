@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useState, useEffect } from "react";
 import { Button } from "./ui";
 import { Input } from "./ui";
 import { ArrowRight, Lock, User } from "lucide-react";
@@ -9,27 +9,39 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+    // Hide scrollbar ONLY for this page
+    useEffect(() => {
+        // Save the original overflow to restore it later
+        const originalStyle = window.getComputedStyle(document.body).overflow;
+        document.body.style.overflow = "hidden";
+
+        return () => {
+            // Restore original overflow when moving to Dashboard/other pages
+            document.body.style.overflow = originalStyle;
+        };
+    }, []);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if (username && password) {
-            // 🔥 Later replace with API call
-            navigate("/dashboard"); // ✅ redirect
+            navigate("/dashboard");
         } else {
             alert("Please fill all fields");
         }
     };
 
     return (
-        <div className="min-h-screen bg-background flex items-center justify-center px-6">
+        /* 'fixed inset-0' is the safest way to ensure NO scroll without 
+           changing your global index.css body settings */
+        <div className="fixed inset-0 flex items-center justify-center bg-background px-6 overflow-hidden">
 
-            {/* Card */}
+            {/* Login Card - Using your CSS variable 'bg-card' */}
             <div className="w-full max-w-md bg-card border border-border rounded-2xl shadow-2xl p-8">
 
-                {/* Logo */}
+                {/* Logo & Header */}
                 <div className="flex flex-col items-center mb-8">
-                    <div className="w-10 h-10 rounded-xl bg-foreground flex items-center justify-center mb-3">
-                        <Lock className="w-5 h-5 text-background" />
+                    <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center mb-3">
+                        <Lock className="w-5 h-5 text-primary-foreground" />
                     </div>
 
                     <h2 className="text-2xl font-semibold text-foreground">
@@ -44,9 +56,8 @@ export default function Login() {
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
 
-                    {/* Username */}
                     <div className="space-y-2">
-                        <label className="text-sm text-foreground">Username</label>
+                        <label className="text-sm font-medium text-foreground">Username</label>
                         <div className="relative">
                             <User className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                             <Input
@@ -59,9 +70,8 @@ export default function Login() {
                         </div>
                     </div>
 
-                    {/* Password */}
                     <div className="space-y-2">
-                        <label className="text-sm text-foreground">Password</label>
+                        <label className="text-sm font-medium text-foreground">Password</label>
                         <div className="relative">
                             <Lock className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                             <Input
@@ -74,26 +84,21 @@ export default function Login() {
                         </div>
                     </div>
 
-                    {/* Options */}
-                    <div className="flex items-center justify-between text-sm">
-                     
-
-                        <span className="text-accent cursor-pointer hover:underline">
+                    <div className="flex items-center justify-end">
+                        <span className="text-sm text-accent cursor-pointer hover:underline font-medium">
                             Forgot password?
                         </span>
                     </div>
 
-                    {/* Button */}
-                    <Button type="submit" className="w-full gap-2">
+                    <Button type="submit" className="w-full gap-2 py-6 text-base">
                         Login
                         <ArrowRight className="w-4 h-4" />
                     </Button>
                 </form>
 
-                {/* Footer */}
-                <p className="text-center text-sm text-muted-foreground mt-6">
+                <p className="text-center text-sm text-muted-foreground mt-8">
                     Don’t have an account?{" "}
-                    <span className="text-accent cursor-pointer hover:underline">
+                    <span className="text-accent font-medium cursor-pointer hover:underline">
                         Sign up
                     </span>
                 </p>
