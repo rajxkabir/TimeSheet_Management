@@ -68,19 +68,13 @@ export function LandingNavbar({ handleStart }) {
 
                 {/* Right Section */}
                 <div className="hidden md:flex items-center gap-4">
-                    <button
-                        onClick={() => navigate("/login")}
-                        className="text-sm text-muted-foreground hover:text-foreground transition duration-300 hover:scale-105"
-                    >
-                  Login
-                    </button>
 
                     <Button
                         onClick={handleStart}
                         size="sm"
                         className="transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20"
                     >
-                        Get Started 🚀
+                        Login 🚀
                     </Button>
 
                     <button

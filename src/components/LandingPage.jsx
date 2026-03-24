@@ -13,6 +13,7 @@ import {
   Shield,
   Globe,
 } from "lucide-react";
+import { Footer } from "./Footer";
 
 export function LandingPage() {
   const navigate = useNavigate();
@@ -429,10 +430,8 @@ export function LandingPage() {
 
 
 
-        {/* ================= FOOTER ================= */}
-        <footer className="border-t py-10 text-center text-sm text-muted-foreground">
-          © 2026 Trackora. All rights reserved.
-        </footer>
+              {/* ================= FOOTER ================= */}
+              <Footer />
 
       </div>
     </div>
