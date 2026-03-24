@@ -1,13 +1,30 @@
-﻿import { useState } from "react";
+﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Clock, Bell, Search, Menu, X, LogOut } from "lucide-react";
+import { Clock, Bell, Search, Menu, X, LogOut, Sun, Moon } from "lucide-react";
 import { Button, Input, Avatar, AvatarFallback } from "./ui";
 
 export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
     const [searchOpen, setSearchOpen] = useState(false);
+    const [theme, setTheme] = useState(() => {
+        return localStorage.getItem("theme") || "light";
+    });
+
     const navigate = useNavigate();
 
-    // 🔥 Get initials from username
+    useEffect(() => {
+        if (theme === "dark") {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+    }, [theme]);
+
+    const toggleTheme = () => {
+        const newTheme = theme === "light" ? "dark" : "light";
+        setTheme(newTheme);
+        localStorage.setItem("theme", newTheme);
+    };
+
     const getInitials = (name) => {
         return name
             .split(" ")
@@ -17,7 +34,6 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
     };
 
     const handleLogout = () => {
-        // 🔐 later: clear token/session
         navigate("/login");
     };
 
@@ -26,7 +42,6 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
 
             <div className="flex h-full items-center justify-between px-4 md:px-6">
 
-                {/* Left */}
                 <div className="flex items-center gap-4">
                     <Button
                         variant="ghost"
@@ -51,7 +66,6 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
                     </div>
                 </div>
 
-                {/* Center Search */}
                 <div className="hidden flex-1 max-w-md mx-8 md:block">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 w-4 h-4 -translate-y-1/2 text-muted-foreground" />
@@ -62,10 +76,8 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
                     </div>
                 </div>
 
-                {/* Right */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 md:gap-2">
 
-                    {/* Mobile Search Toggle */}
                     <Button
                         variant="ghost"
                         size="icon"
@@ -75,25 +87,28 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
                         <Search className="w-5 h-5" />
                     </Button>
 
-                    {/* Notifications */}
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={toggleTheme}
+                        className="transition-all duration-300 hover:bg-secondary"
+                    >
+                        {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                    </Button>
+
                     <Button variant="ghost" size="icon" className="relative">
                         <Bell className="w-5 h-5" />
                         <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-accent" />
                     </Button>
 
-                    {/* Avatar */}
                     <Button variant="ghost" size="icon" className="rounded-full">
                         <Avatar className="w-8 h-8">
                             <AvatarFallback className="bg-secondary text-foreground text-sm">
                                 {getInitials(user)}
                             </AvatarFallback>
-
-
-
                         </Avatar>
                     </Button>
 
-                    {/* Logout */}
                     <Button
                         variant="ghost"
                         size="icon"
@@ -105,9 +120,8 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
                 </div>
             </div>
 
-            {/* Mobile Search */}
             {searchOpen && (
-                <div className="absolute top-14 left-0 right-0 border-b border-border bg-background p-4 md:hidden">
+                <div className={"absolute top-14 left-0 right-0 border-b border-border bg-background p-4 md:hidden"}>
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 w-4 h-4 -translate-y-1/2 text-muted-foreground" />
                         <Input

@@ -14,6 +14,10 @@ export function LandingNavbar({ handleStart }) {
         document.documentElement.classList.toggle("dark");
     };
 
+    const navLinkStyles = "relative text-sm text-muted-foreground transition duration-300 hover:text-foreground " +
+        "after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] " +
+        "after:bg-foreground after:transition-all after:duration-300 hover:after:w-full";
+
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
             <div className="max-w-6xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
@@ -30,45 +34,16 @@ export function LandingNavbar({ handleStart }) {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center gap-8">
-                    <a
-                        href="#features"
-                        className="relative text-sm text-muted-foreground transition duration-300 hover:text-foreground
-  after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px]
-  after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
-                    >
-                        Features
-                    </a>
-                    <a
-                        href="#benefits"
-                        className="relative text-sm text-muted-foreground transition duration-300 hover:text-foreground
-  after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px]
-  after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
-                    >
-                        Benefits
-                    </a>
-
-                    <a
-                        href="#pricing"
-                        className="relative text-sm text-muted-foreground transition duration-300 hover:text-foreground
-  after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px]
-  after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
-                    >
-                        Pricing
-                    </a>
-
-                    <a
-                        href="#about"
-                        className="relative text-sm text-muted-foreground transition duration-300 hover:text-foreground
-  after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px]
-  after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
-                    >
-                        About
-                    </a>
+                    <a href="#features" className={navLinkStyles}>Features</a>
+                    <a href="#benefits" className={navLinkStyles}>Benefits</a>
+                    <a href="#pricing" className={navLinkStyles}>Pricing</a>
+                    <a href="#about" className={navLinkStyles}>About</a>
+                    {/* Added Contact Us */}
+                    <a href="#contact" className={navLinkStyles}>Contact Us</a>
                 </div>
 
                 {/* Right Section */}
                 <div className="hidden md:flex items-center gap-4">
-
                     <Button
                         onClick={handleStart}
                         size="sm"
@@ -93,23 +68,27 @@ export function LandingNavbar({ handleStart }) {
 
             {/* Mobile Menu */}
             {isOpen && (
-                <div className="md:hidden px-4 pb-4 space-y-3 bg-background border-t border-border">
-                    <a href="#features" className="block text-sm text-muted-foreground">Features</a>
-                    <a href="#pricing" className="block text-sm text-muted-foreground">Pricing</a>
-                    <a href="#about" className="block text-sm text-muted-foreground">About</a>
+                <div className="md:hidden px-4 py-6 space-y-4 bg-background border-t border-border shadow-xl">
+                    <a href="#features" onClick={() => setIsOpen(false)} className="block text-sm text-muted-foreground">Features</a>
+                    <a href="#pricing" onClick={() => setIsOpen(false)} className="block text-sm text-muted-foreground">Pricing</a>
+                    <a href="#about" onClick={() => setIsOpen(false)} className="block text-sm text-muted-foreground">About</a>
+                    {/* Added Contact Us for Mobile */}
+                    <a href="#contact" onClick={() => setIsOpen(false)} className="block text-sm text-muted-foreground">Contact Us</a>
 
-                    <button onClick={() => navigate("/login")} className="block w-full text-left text-sm">
-                        Login
-                    </button>
+                    <div className="pt-4 border-t border-border space-y-3">
+                        <button onClick={() => { navigate("/login"); setIsOpen(false); }} className="block w-full text-left text-sm text-foreground font-medium">
+                            Login
+                        </button>
 
-                    <Button onClick={handleStart} className="w-full">
-                        Get Started 🚀
-                    </Button>
+                        <Button onClick={() => { handleStart(); setIsOpen(false); }} className="w-full">
+                            Get Started 🚀
+                        </Button>
 
-                    <button onClick={toggleTheme} className="flex items-center gap-2 text-sm">
-                        {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-                        Theme
-                    </button>
+                        <button onClick={toggleTheme} className="flex items-center gap-2 text-sm pt-2">
+                            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+                            Switch Theme
+                        </button>
+                    </div>
                 </div>
             )}
         </nav>

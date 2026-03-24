@@ -20,36 +20,19 @@ export function Footer() {
 
     const validate = () => {
         let err = {};
-
-        if (!/^[A-Za-z ]+$/.test(form.name)) {
-            err.name = "Only alphabets allowed";
-        }
-
-        if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.com$/.test(form.email)) {
-            err.email = "Lowercase email ending with .com";
-        }
-
-        if (!/^[0-9]{10}$/.test(form.number)) {
-            err.number = "Enter valid 10 digit number";
-        }
-
+        if (!/^[A-Za-z ]+$/.test(form.name)) err.name = "Only alphabets allowed";
+        if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.com$/.test(form.email)) err.email = "Lowercase email ending with .com";
+        if (!/^[0-9]{10}$/.test(form.number)) err.number = "Enter valid 10 digit number";
         if (!form.reason) err.reason = "Select a reason";
-
-        if (form.message.length < 10) {
-            err.message = "Minimum 10 characters required";
-        }
-
+        if (form.message.length < 10) err.message = "Minimum 10 characters required";
         setErrors(err);
         return Object.keys(err).length === 0;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if (validate()) {
             alert("Submitted ✅");
-
-            // ✅ Reset form after submit
             setForm({
                 name: "",
                 email: "",
@@ -60,15 +43,18 @@ export function Footer() {
         }
     };
 
+    const inputStyles = "w-full p-3 rounded-xl border border-border bg-background text-foreground " +
+        "placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-accent/50 " +
+        "focus:border-accent outline-none transition-all dark:bg-muted/20 dark:text-white";
+
     return (
-        <footer className="border-t bg-muted/30 py-16 px-6">
+        <footer id="contact" className="border-t bg-muted/30 py-16 px-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 -z-10 translate-x-1/2 -translate-y-1/2">
+                <div className="w-[400px] h-[400px] bg-blue-500/10 blur-[100px] rounded-full" />
+            </div>
 
-            <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
-
-                {/* ================= LEFT ================= */}
+            <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 relative z-10">
                 <div className="space-y-6">
-
-                    {/* Logo + Tagline */}
                     <div>
                         <h2 className="text-2xl font-bold">Trackora</h2>
                         <p className="text-muted-foreground text-sm mt-2">
@@ -76,110 +62,116 @@ export function Footer() {
                         </p>
                     </div>
 
-                    {/* Links */}
                     <div className="flex flex-col gap-2 text-sm">
                         <a href="#features" className="hover:text-accent transition">Features</a>
                         <a href="#pricing" className="hover:text-accent transition">Pricing</a>
                         <a href="#about" className="hover:text-accent transition">About</a>
                     </div>
 
-                    {/* Social Icons */}
                     <div className="flex items-center gap-4">
-                        <a href="#" className="p-2 rounded-lg bg-background hover:bg-accent/20 transition">
+                        <a href="#" className="p-2 rounded-lg bg-background border border-border hover:bg-accent/10 hover:border-accent hover:text-accent transition-all duration-300">
                             <Instagram size={18} />
                         </a>
-                        <a href="#" className="p-2 rounded-lg bg-background hover:bg-accent/20 transition">
+                        <a href="#" className="p-2 rounded-lg bg-background border border-border hover:bg-accent/10 hover:border-accent hover:text-accent transition-all duration-300">
                             <Linkedin size={18} />
                         </a>
-                        <a href="#" className="p-2 rounded-lg bg-background hover:bg-accent/20 transition">
+                        <a href="#" className="p-2 rounded-lg bg-background border border-border hover:bg-accent/10 hover:border-accent hover:text-accent transition-all duration-300">
                             <Twitter size={18} />
                         </a>
-                        <a
-                            href="mailto:trackora@gmail.com"
-                            className="p-2 rounded-lg bg-background hover:bg-accent/20 transition"
-                        >
+                        <a href="mailto:trackora@gmail.com" className="p-2 rounded-lg bg-background border border-border hover:bg-accent/10 hover:border-accent hover:text-accent transition-all duration-300">
                             <Mail size={18} />
                         </a>
                     </div>
 
-                    {/* Extra Line */}
                     <p className="text-xs text-muted-foreground">
                         Built with ❤️ for productivity lovers.
                     </p>
                 </div>
 
-                {/* ================= RIGHT (FORM CARD) ================= */}
-                <div className="group bg-card p-6 rounded-2xl border shadow-sm transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
+                <div className={"group relative bg-card/70 backdrop-blur-xl p-8 rounded-2xl border border-border shadow-sm transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-2 overflow-hidden"}>
 
-                    <h3 className="font-semibold mb-4 text-lg">Contact Us</h3>
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-br from-blue-500/5 to-cyan-400/5 blur-2xl -z-10" />
 
-                    <form onSubmit={handleSubmit} className="space-y-3">
+                    <h3 className="font-bold mb-6 text-xl bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent inline-block">
+                        Contact Us
+                    </h3>
 
-                        <input
-                            type="text"
-                            placeholder="Name"
-                            className="w-full p-2 rounded border bg-background focus:ring-2 focus:ring-accent outline-none"
-                            value={form.name}
-                            onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        />
-                        {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+                    <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="Name"
+                                className={inputStyles}
+                                value={form.name}
+                                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                            />
+                            {errors.name && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.name}</p>}
+                        </div>
 
-                        <input
-                            type="text"
-                            placeholder="Email"
-                            className="w-full p-2 rounded border bg-background focus:ring-2 focus:ring-accent outline-none"
-                            value={form.email}
-                            onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        />
-                        {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="Email"
+                                className={inputStyles}
+                                value={form.email}
+                                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                            />
+                            {errors.email && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.email}</p>}
+                        </div>
 
-                        <input
-                            type="text"
-                            placeholder="Phone Number"
-                            className="w-full p-2 rounded border bg-background focus:ring-2 focus:ring-accent outline-none"
-                            value={form.number}
-                            onChange={(e) => setForm({ ...form, number: e.target.value })}
-                        />
-                        {errors.number && <p className="text-red-500 text-xs">{errors.number}</p>}
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <input
+                                    type="text"
+                                    placeholder="Phone"
+                                    className={inputStyles}
+                                    value={form.number}
+                                    onChange={(e) => setForm({ ...form, number: e.target.value })}
+                                />
+                                {errors.number && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.number}</p>}
+                            </div>
+                            <div>
+                                <select
+                                    className={inputStyles}
+                                    value={form.reason}
+                                    onChange={(e) => setForm({ ...form, reason: e.target.value })}
+                                >
+                                    <option value="" className="bg-background text-foreground">Reason</option>
+                                    <option className="bg-background text-foreground">General</option>
+                                    <option className="bg-background text-foreground">Bug</option>
+                                    <option className="bg-background text-foreground">Pricing</option>
+                                </select>
+                                {errors.reason && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.reason}</p>}
+                            </div>
+                        </div>
 
-                        <select
-                            className="w-full p-2 rounded border bg-background focus:ring-2 focus:ring-accent outline-none"
-                            value={form.reason}
-                            onChange={(e) => setForm({ ...form, reason: e.target.value })}
-                        >
-                            <option value="">Select Reason</option>
-                            <option>General Query</option>
-                            <option>Bug Report</option>
-                            <option>Pricing</option>
-                            <option>Support</option>
-                        </select>
-                        {errors.reason && <p className="text-red-500 text-xs">{errors.reason}</p>}
-
-                        <textarea
-                            placeholder="Message"
-                            rows="3"
-                            className="w-full p-2 rounded border bg-background focus:ring-2 focus:ring-accent outline-none"
-                            value={form.message}
-                            onChange={(e) => setForm({ ...form, message: e.target.value })}
-                        />
-                        {errors.message && <p className="text-red-500 text-xs">{errors.message}</p>}
+                        <div>
+                            <textarea
+                                placeholder="Message"
+                                rows="3"
+                                className={inputStyles + " resize-none"}
+                                value={form.message}
+                                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                            />
+                            {errors.message && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.message}</p>}
+                        </div>
 
                         <button
                             type="submit"
-                            className="w-full flex items-center justify-center gap-2 bg-foreground text-background py-2 rounded transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                            className={"w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold transition-all duration-300 " +
+                                "bg-foreground text-background hover:bg-accent hover:text-white hover:shadow-lg hover:shadow-accent/30 hover:scale-[1.02] active:scale-95"}
                         >
                             Submit <ArrowRight className="w-4 h-4" />
                         </button>
                     </form>
-                </div>
 
+                    <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-gradient-to-r from-blue-500 to-cyan-400 group-hover:w-full transition-all duration-700" />
+                </div>
             </div>
 
-            {/* ================= BOTTOM ================= */}
-            <div className="mt-12 text-center text-sm text-muted-foreground">
+            <div className="mt-12 text-center text-sm text-muted-foreground border-t border-border/50 pt-8">
                 © 2026 Trackora. All rights reserved.
             </div>
-
         </footer>
     );
 }
