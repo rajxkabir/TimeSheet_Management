@@ -178,7 +178,7 @@ export function LandingPage() {
                 </section>
 
                 {/* ================= Users ================= */}
-                <section id="pricing" className="relative py-24 px-4 sm:px-6">
+                <section id="users" className="relative py-24 px-4 sm:px-6">
                     <div className="absolute inset-0 -z-10 flex justify-center">
                         <div className="w-[600px] h-[600px] bg-gradient-to-r from-blue-500/10 to-cyan-400/10 blur-[120px] rounded-full" />
                     </div>

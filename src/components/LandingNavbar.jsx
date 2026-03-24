@@ -36,7 +36,7 @@ export function LandingNavbar({ handleStart }) {
                 <div className="hidden md:flex items-center gap-8">
                     <a href="#features" className={navLinkStyles}>Features</a>
                     <a href="#benefits" className={navLinkStyles}>Benefits</a>
-                    <a href="#pricing" className={navLinkStyles}>Users</a>
+                    <a href="#users" className={navLinkStyles}>Users</a>
                     <a href="#about" className={navLinkStyles}>About</a>
                     {/* Added Contact Us */}
                     <a href="#contact" className={navLinkStyles}>Contact Us</a>
@@ -70,7 +70,7 @@ export function LandingNavbar({ handleStart }) {
             {isOpen && (
                 <div className="md:hidden px-4 py-6 space-y-4 bg-background border-t border-border shadow-xl">
                     <a href="#features" onClick={() => setIsOpen(false)} className="block text-sm text-muted-foreground">Features</a>
-                    <a href="#pricing" onClick={() => setIsOpen(false)} className="block text-sm text-muted-foreground">Pricing</a>
+                    <a href="#users" onClick={() => setIsOpen(false)} className="block text-sm text-muted-foreground">Pricing</a>
                     <a href="#about" onClick={() => setIsOpen(false)} className="block text-sm text-muted-foreground">About</a>
                     {/* Added Contact Us for Mobile */}
                     <a href="#contact" onClick={() => setIsOpen(false)} className="block text-sm text-muted-foreground">Contact Us</a>

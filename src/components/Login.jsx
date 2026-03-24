@@ -23,6 +23,7 @@ export default function Login() {
 
     const navigate = useNavigate();
 
+    // ✅ Theme Logic
     useEffect(() => {
         if (theme === "dark") {
             document.documentElement.classList.add("dark");
@@ -37,14 +38,6 @@ export default function Login() {
         localStorage.setItem("theme", newTheme);
     };
 
-    useEffect(() => {
-        const originalStyle = window.getComputedStyle(document.body).overflow;
-        document.body.style.overflow = "hidden";
-        return () => {
-            document.body.style.overflow = originalStyle;
-        };
-    }, []);
-
     const handleSubmit = (e) => {
         e.preventDefault();
         if (username && password) {
@@ -55,17 +48,17 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen bg-background flex flex-col selection:bg-accent/30">
+        /* ✅ WRAPPER: Fixed height and hidden overflow to remove scroll instantly */
+        <div className="h-screen w-screen bg-background flex flex-col selection:bg-accent/30 overflow-hidden">
 
-            {/* ✅ NAVBAR */}
+            {/* ✅ NAVBAR: Fixed at the top */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-xl border-b border-border/50">
                 <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
 
-                    {/* ✨ FIXED LOGO (No Overlap) */}
+                    {/* ✨ LOGO */}
                     <div className="flex items-center gap-2.5 cursor-pointer group w-32">
                         <div className="relative w-8 h-8 rounded-lg bg-foreground flex items-center justify-center transition-all duration-500 group-hover:rotate-[10deg] group-hover:scale-110 shadow-lg shadow-foreground/10">
                             <Clock className="w-4 h-4 text-background" />
-                            {/* Inner Glow for Icon */}
                             <div className="absolute inset-0 rounded-lg bg-blue-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
 
@@ -74,6 +67,7 @@ export default function Login() {
                         </span>
                     </div>
 
+                    {/* THEME TOGGLE */}
                     <button
                         onClick={toggleTheme}
                         className="p-2 rounded-xl border border-border bg-secondary/50 transition-all duration-300 hover:bg-secondary hover:scale-105 active:scale-95"
@@ -83,8 +77,11 @@ export default function Login() {
                 </div>
             </nav>
 
-            {/* ✅ MAIN CONTAINER - FIXED CENTERED */}
-            <div className="flex-1 flex flex-col items-center justify-center px-6 relative">
+            {/* ✅ MAIN CONTENT 
+                1. pt-24 creates a nice gap from the fixed navbar (14 + 10 extra).
+                2. justify-center keeps the form balanced in the remaining space.
+            */}
+            <main className="flex-1 flex flex-col items-center justify-center px-6 pt-24 pb-10 relative">
 
                 {/* BACKGROUND AMBIENCE */}
                 <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -94,11 +91,14 @@ export default function Login() {
 
                 {/* ✅ GLOWING FORM CARD */}
                 <div className="group relative w-full max-w-[400px]">
-                    {/* External Glow Trail (Matches Landing Page) */}
+                    {/* External Glow Trail */}
                     <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-[30px] blur opacity-0 group-hover:opacity-20 transition duration-500" />
 
-                    <div className="relative w-full p-8 rounded-3xl border border-border/50 bg-card/40 backdrop-blur-2xl shadow-2xl overflow-hidden transition-all duration-500">
+                    <div className="relative w-full p-8 rounded-3xl border border-border/50 bg-card/40 backdrop-blur-2xl shadow-2xl
+                                    overflow-hidden transition-all duration-500
+                                    mt-5">
 
+                        {/* Header Section */}
                         <div className="flex flex-col items-center mb-8">
                             <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center mb-4 ring-1 ring-accent/20">
                                 <Lock className="w-5 h-5 text-accent" />
@@ -111,6 +111,7 @@ export default function Login() {
                             </p>
                         </div>
 
+                        {/* Login Form */}
                         <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
                             <div className="space-y-2">
                                 <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest ml-1">Username</label>
@@ -161,6 +162,7 @@ export default function Login() {
                             </Button>
                         </form>
 
+                        {/* Footer Links */}
                         <div className="mt-8 pt-6 border-t border-border/50 text-center relative z-10">
                             <p className="text-sm text-muted-foreground">
                                 Don't have an account?{" "}
@@ -170,11 +172,11 @@ export default function Login() {
                             </p>
                         </div>
 
-                        {/* ✨ Animated Bottom Border Line */}
+                        {/* ✨ Animated Bottom Glow Line */}
                         <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-blue-500 to-cyan-400 group-hover:w-full transition-all duration-700" />
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     );
 }
