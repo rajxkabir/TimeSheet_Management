@@ -87,6 +87,9 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
                             <AvatarFallback className="bg-secondary text-foreground text-sm">
                                 {getInitials(user)}
                             </AvatarFallback>
+
+
+
                         </Avatar>
                     </Button>
 
