@@ -68,10 +68,6 @@ export function LandingNavbar({ handleStart }) {
 
                 {/* Right Section */}
                 <div className="hidden md:flex items-center gap-4">
-<<<<<<< HEAD
-                   
-=======
->>>>>>> newBranch
 
                     <Button
                         onClick={handleStart}
