@@ -113,7 +113,11 @@ export default function Login() {
                     </div>
 
                     {/* FORGOT */}
-                 
+                    <div className="flex justify-end">
+                        <span className="text-sm text-accent cursor-pointer hover:underline">
+                            Forgot password?
+                        </span>
+                    </div>
 
                     {/* CTA */}
                     <Button
