@@ -177,40 +177,40 @@ export function LandingPage() {
                     </div>
                 </section>
 
-                {/* ================= PRICING ================= */}
+                {/* ================= Users ================= */}
                 <section id="pricing" className="relative py-24 px-4 sm:px-6">
                     <div className="absolute inset-0 -z-10 flex justify-center">
                         <div className="w-[600px] h-[600px] bg-gradient-to-r from-blue-500/10 to-cyan-400/10 blur-[120px] rounded-full" />
                     </div>
 
                     <div className="max-w-6xl mx-auto text-center mb-16">
-                        <div className="inline-flex px-4 py-1.5 rounded-full bg-accent/10 text-accent text-sm mb-4 font-medium">💰 Pricing</div>
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-4">Simple, transparent pricing</h2>
-                        <p className="text-muted-foreground max-w-2xl mx-auto">Choose a plan that fits your workflow. Upgrade anytime as your team grows.</p>
+                        <div className="inline-flex px-4 py-1.5 rounded-full bg-accent/10 text-accent text-sm mb-4 font-medium">🕵️ Users</div>
+                        <h2 className="text-4xl sm:text-5xl font-bold mb-4">The Decision Makers</h2>
+                        <p className="text-muted-foreground max-w-2xl mx-auto">The minds in the driver's seat. Scaling Trackora, one move at a time.</p>
                     </div>
 
                     <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 items-stretch">
                         {[
                             {
-                                name: "Personal",
+                                name: "Employee",
                                 price: "0",
                                 unit: "/month",
-                                desc: "Best for individuals getting started",
+                                desc: "Squad Essential Real ones making the vision happen.",
                                 features: ["Time tracking", "Weekly timesheets", "Basic reports", "Data export (CSV)"],
                                 highlight: false,
                                 buttonText: "Get Started"
                             },
                             {
-                                name: "Team",
+                                name: "Admin",
                                 price: "12",
                                 unit: "/user",
-                                desc: "Perfect for small teams",
+                                desc: "The primary engine driving the Trackora roadmap.",
                                 features: ["Everything in Personal", "Team collaboration", "Advanced reports", "Project tracking"],
                                 highlight: true,
                                 buttonText: "Start Free Trial"
                             },
                             {
-                                name: "Organization",
+                                name: "TeamLead",
                                 price: "29",
                                 unit: "/user",
                                 desc: "Best for large companies",
@@ -232,7 +232,7 @@ export function LandingPage() {
 
                                 {plan.highlight && (
                                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-muted text-muted-foreground group-hover:bg-accent group-hover:text-white text-[10px] font-bold rounded-full uppercase tracking-wider shadow-sm transition-all duration-300 z-50">
-                                        Most Popular
+                                        Master Control
                                     </div>
                                 )}
 

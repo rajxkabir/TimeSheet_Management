@@ -60,7 +60,7 @@ export default function Login() {
             {/* ✅ NAVBAR */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-xl border-b border-border/50">
                 <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-                    
+
                     {/* ✨ FIXED LOGO (No Overlap) */}
                     <div className="flex items-center gap-2.5 cursor-pointer group w-32">
                         <div className="relative w-8 h-8 rounded-lg bg-foreground flex items-center justify-center transition-all duration-500 group-hover:rotate-[10deg] group-hover:scale-110 shadow-lg shadow-foreground/10">
@@ -68,7 +68,7 @@ export default function Login() {
                             {/* Inner Glow for Icon */}
                             <div className="absolute inset-0 rounded-lg bg-blue-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
-                        
+
                         <span className="text-lg font-bold tracking-tight text-foreground transition-all duration-500 group-hover:text-blue-500">
                             Trackora
                         </span>
@@ -83,9 +83,9 @@ export default function Login() {
                 </div>
             </nav>
 
-            {/* ✅ MAIN CONTAINER */}
-            <div className="flex-1 flex items-center justify-center px-6 relative">
-                
+            {/* ✅ MAIN CONTAINER - FIXED CENTERED */}
+            <div className="flex-1 flex flex-col items-center justify-center px-6 relative">
+
                 {/* BACKGROUND AMBIENCE */}
                 <div className="absolute inset-0 -z-10 overflow-hidden">
                     <div className="absolute top-[10%] left-[15%] w-[400px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full" />
@@ -98,7 +98,7 @@ export default function Login() {
                     <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-[30px] blur opacity-0 group-hover:opacity-20 transition duration-500" />
 
                     <div className="relative w-full p-8 rounded-3xl border border-border/50 bg-card/40 backdrop-blur-2xl shadow-2xl overflow-hidden transition-all duration-500">
-                        
+
                         <div className="flex flex-col items-center mb-8">
                             <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center mb-4 ring-1 ring-accent/20">
                                 <Lock className="w-5 h-5 text-accent" />
@@ -121,7 +121,7 @@ export default function Login() {
                                         placeholder="Username"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
-                                        className={"pl-10 h-11 bg-background/50 border-border/60 focus:ring-2 focus:ring-blue-500/20 transition-all " + 
+                                        className={"pl-10 h-11 bg-background/50 border-border/60 focus:ring-2 focus:ring-blue-500/20 transition-all " +
                                             (username ? "ring-1 ring-blue-500/20" : "")}
                                     />
                                 </div>
@@ -139,7 +139,7 @@ export default function Login() {
                                         placeholder="••••••••"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className={"pl-10 pr-10 h-11 bg-background/50 border-border/60 focus:ring-2 focus:ring-blue-500/20 transition-all " + 
+                                        className={"pl-10 pr-10 h-11 bg-background/50 border-border/60 focus:ring-2 focus:ring-blue-500/20 transition-all " +
                                             (password ? "ring-1 ring-blue-500/20" : "")}
                                     />
                                     <button

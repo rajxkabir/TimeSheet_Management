@@ -36,7 +36,7 @@ export function LandingNavbar({ handleStart }) {
                 <div className="hidden md:flex items-center gap-8">
                     <a href="#features" className={navLinkStyles}>Features</a>
                     <a href="#benefits" className={navLinkStyles}>Benefits</a>
-                    <a href="#pricing" className={navLinkStyles}>Pricing</a>
+                    <a href="#pricing" className={navLinkStyles}>Users</a>
                     <a href="#about" className={navLinkStyles}>About</a>
                     {/* Added Contact Us */}
                     <a href="#contact" className={navLinkStyles}>Contact Us</a>

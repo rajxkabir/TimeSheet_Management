@@ -34,7 +34,7 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
     };
 
     const handleLogout = () => {
-        navigate("/login");
+        navigate("/");
     };
 
     return (
