@@ -34,11 +34,9 @@ export function LandingNavbar({ handleStart }) {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center gap-8">
+                    <a href="#hero" className={navLinkStyles}>Home</a>
                     <a href="#features" className={navLinkStyles}>Features</a>
-                    <a href="#benefits" className={navLinkStyles}>Benefits</a>
-                    <a href="#users" className={navLinkStyles}>Users</a>
                     <a href="#about" className={navLinkStyles}>About</a>
-                    {/* Added Contact Us */}
                     <a href="#contact" className={navLinkStyles}>Contact Us</a>
                 </div>
 

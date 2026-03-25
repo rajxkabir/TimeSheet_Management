@@ -49,7 +49,7 @@ export function Features() {
     ];
 
     return (
-        <section id="features" className="py-24 px-4 sm:px-6 bg-muted/30">
+        <section id="features" className="py-5 px-4 m-0 sm:px-6 bg-muted/30">
 
             {/* HEADER */}
             <div className="max-w-6xl mx-auto text-center mb-20">

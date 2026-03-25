@@ -50,7 +50,7 @@ export function LandingPage() {
             <div className="pt-16">
 
                 {/* ================= HERO ================= */}
-                <section id="hero" className="relative pt-32 pb-24 px-6 text-center overflow-hidden">
+                <section id="hero" className="relative pt-24 pb-24 px-6 text-center overflow-hidden">
                     <div className="absolute inset-0 -z-10 flex justify-center">
                         <div className="w-[600px] h-[600px] bg-gradient-to-r from-blue-500/20 to-cyan-400/20 blur-[120px] rounded-full" />
                     </div>
@@ -80,27 +80,34 @@ export function LandingPage() {
                                 onClick={handleStart}
                                 className="px-8 gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20"
                             >
-                                Get Started 🚀
+                                Login ➡️
                             </Button>
 
-                            <Button
+                            {/* <Button
                                 size="lg"
                                 variant="outline"
                                 className="transition-all duration-300 hover:scale-105"
                             >
                                 Watch Demo
-                            </Button>
+                            </Button> */}
                         </div>
 
-                        <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
+                        {/* <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                             <span>✨ 10,000+ users</span>
                             <span>🚀 Fast & reliable</span>
                             <span>🔒 Secure platform</span>
-                        </div>
+                        </div> */}
                     </div>
                 </section>
 
-                {/* ================= DASHBOARD PREVIEW ================= */}
+             
+
+                {/* ================= FEATURES ================= */}
+                <section id="features" className=" pt-8 pb-20 px-6 bg-muted/30">
+                    <Features />
+                </section>
+
+   {/* ================= DASHBOARD PREVIEW ================= */}
                 <section className="relative px-4 sm:px-6 pb-20 overflow-hidden">
                     <div className="absolute inset-0 -z-10 flex justify-center">
                         <div className="w-[500px] h-[500px] bg-blue-500/20 blur-[120px] rounded-full" />
@@ -136,14 +143,8 @@ export function LandingPage() {
                         </div>
                     </div>
                 </section>
-
-                {/* ================= FEATURES ================= */}
-                <section id="features" className="py-20 px-6 bg-muted/30">
-                    <Features />
-                </section>
-
                 {/* ================= BENEFITS ================= */}
-                <section id="benefits" className="relative py-24 px-4 sm:px-6 overflow-hidden">
+                {/* <section id="benefits" className="relative py-24 px-4 sm:px-6 overflow-hidden">
                     <div className="absolute inset-0 -z-10 flex justify-center">
                         <div className="w-[500px] h-[500px] bg-gradient-to-r from-blue-500/20 to-cyan-400/20 blur-[120px] rounded-full" />
                     </div>
@@ -175,110 +176,9 @@ export function LandingPage() {
                             </div>
                         ))}
                     </div>
-                </section>
+                </section> */}
 
-                {/* ================= Users ================= */}
-                <section id="users" className="relative py-24 px-4 sm:px-6">
-                    <div className="absolute inset-0 -z-10 flex justify-center">
-                        <div className="w-[600px] h-[600px] bg-gradient-to-r from-blue-500/10 to-cyan-400/10 blur-[120px] rounded-full" />
-                    </div>
-
-                    <div className="max-w-6xl mx-auto text-center mb-16">
-                        <div className="inline-flex px-4 py-1.5 rounded-full bg-accent/10 text-accent text-sm mb-4 font-medium">🕵️ Users</div>
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-4">The Decision Makers</h2>
-                        <p className="text-muted-foreground max-w-2xl mx-auto">The minds in the driver's seat. Scaling Trackora, one move at a time.</p>
-                    </div>
-
-                    <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 items-stretch">
-                        {[
-                            {
-                                name: "Employee",
-                                price: "0",
-                                unit: "/month",
-                                desc: "Squad Essential Real ones making the vision happen.",
-                                features: ["Time tracking", "Weekly timesheets", "Basic reports", "Data export (CSV)"],
-                                highlight: false,
-                                buttonText: "Get Started"
-                            },
-                            {
-                                name: "Admin",
-                                price: "12",
-                                unit: "/user",
-                                desc: "The primary engine driving the Trackora roadmap.",
-                                features: ["Everything in Personal", "Team collaboration", "Advanced reports", "Project tracking"],
-                                highlight: true,
-                                buttonText: "Start Free Trial"
-                            },
-                            {
-                                name: "TeamLead",
-                                price: "29",
-                                unit: "/user",
-                                desc: "",
-                                features: ["Everything in Team", "Admin controls", "Custom workflows", "Priority support"],
-                                highlight: false,
-                                buttonText: "Contact Sales"
-                            }
-                        ].map((plan) => (
-                            <div
-                                key={plan.name}
-                                className={`group relative p-8 rounded-2xl border flex flex-col transition-all duration-500 hover:-translate-y-2 
-      ${plan.highlight
-                                        ? "border-border bg-card/70 backdrop-blur-xl hover:border-accent hover:bg-accent/5 hover:shadow-2xl hover:shadow-accent/10 scale-105 z-10"
-                                        : "border-border bg-card/70 backdrop-blur-xl hover:border-accent"
-                                    }`}
-                            >
-                                {/* ✨ Card Glow (Triggers when entering the BOX) */}
-                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-br from-blue-500/10 to-cyan-400/10 blur-2xl -z-10" />
-
-                                {plan.highlight && (
-                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-muted text-muted-foreground group-hover:bg-accent group-hover:text-white text-[10px] font-bold rounded-full uppercase tracking-wider shadow-sm transition-all duration-300 z-50">
-                                        Master Control
-                                    </div>
-                                )}
-
-                                <div className="flex-1 relative z-10">
-                                    <h3 className="text-xl font-bold mb-2 group-hover:text-accent transition-colors">
-                                        {plan.name}
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground mb-6">
-                                        {plan.desc}
-                                    </p>
-
-                                    <div className="flex items-baseline gap-1 mb-8">
-                                        <span className="text-4xl font-bold text-foreground">
-                                            {"+" + plan.price} {/* Using + as per your preference */}
-                                        </span>
-                                        <span className="text-muted-foreground text-sm">{plan.unit}</span>
-                                    </div>
-
-                                    <ul className="space-y-4 text-sm mb-10">
-                                        {plan.features.map((feat) => (
-                                            <li key={feat} className="flex items-center gap-3">
-                                                <span className="group-hover:text-accent transition-colors font-bold">✓</span>
-                                                <span className="text-muted-foreground">{feat}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                {/* 🚀 BUTTON: Only hovers when the mouse is directly ON the button */}
-                                <div className="mt-auto relative z-20"> {/* Higher z-index to ensure clickability */}
-                                    <Button
-                                        onClick={handleStart}
-                                        size="lg"
-                                        className="w-full py-6 font-semibold bg-transparent border-2 border-border text-foreground transition-all duration-300 hover:bg-accent hover:border-accent hover:text-white hover:shadow-lg hover:shadow-accent/25 hover:scale-[1.02]"
-                                    >
-                                        {plan.buttonText}
-                                    </Button>
-                                </div>
-
-                                {/* Bottom Line Animation */}
-                                <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-gradient-to-r from-blue-500 to-cyan-400 group-hover:w-full transition-all duration-700" />
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
+                
                 {/* ================= ABOUT ================= */}
                 <section id="about" className="py-24 px-6 bg-muted/30 dark:bg-background">
                     <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -310,7 +210,7 @@ export function LandingPage() {
                 </section>
 
                 {/* ================= CTA ================= */}
-                <section className="relative py-24 px-6 text-center overflow-hidden">
+                {/* <section className="relative py-24 px-6 text-center overflow-hidden">
                     <div className="absolute inset-0 -z-10 flex justify-center">
                         <div className="w-[500px] h-[500px] bg-gradient-to-r from-blue-500/20 to-cyan-400/20 blur-[120px] rounded-full" />
                     </div>
@@ -327,7 +227,7 @@ export function LandingPage() {
                             <ArrowRight className="w-5 h-5" />
                         </Button>
                     </div>
-                </section>
+                </section> */}
 
                 <Footer />
             </div>

@@ -63,8 +63,9 @@ export function Footer() {
                     </div>
 
                     <div className="flex flex-col gap-2 text-sm">
+                        <a href="#hero" className="hover:text-accent transition">Home</a>
+
                         <a href="#features" className="hover:text-accent transition">Features</a>
-                        <a href="#pricing" className="hover:text-accent transition">Pricing</a>
                         <a href="#about" className="hover:text-accent transition">About</a>
                     </div>
 
@@ -84,7 +85,7 @@ export function Footer() {
                     </div>
 
                     <p className="text-xs text-muted-foreground">
-                        Built with ❤️ for productivity lovers.
+                        Built with 💻 for productivity coders.
                     </p>
                 </div>
 
@@ -139,7 +140,6 @@ export function Footer() {
                                     <option value="" className="bg-background text-foreground">Reason</option>
                                     <option className="bg-background text-foreground">General</option>
                                     <option className="bg-background text-foreground">Bug</option>
-                                    <option className="bg-background text-foreground">Pricing</option>
                                 </select>
                                 {errors.reason && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.reason}</p>}
                             </div>
