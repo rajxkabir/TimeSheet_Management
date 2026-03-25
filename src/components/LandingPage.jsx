@@ -213,7 +213,7 @@ export function LandingPage() {
                                 name: "TeamLead",
                                 price: "29",
                                 unit: "/user",
-                                desc: "Best for large companies",
+                                desc: "",
                                 features: ["Everything in Team", "Admin controls", "Custom workflows", "Priority support"],
                                 highlight: false,
                                 buttonText: "Contact Sales"

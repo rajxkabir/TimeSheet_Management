@@ -81,6 +81,7 @@ export function LandingNavbar({ handleStart }) {
                         </button>
 
                         <Button onClick={() => { handleStart(); setIsOpen(false); }} className="w-full">
+
                             Get Started 🚀
                         </Button>
 

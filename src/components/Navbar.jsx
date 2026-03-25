@@ -96,10 +96,7 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
                         {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
                     </Button>
 
-                    <Button variant="ghost" size="icon" className="relative">
-                        <Bell className="w-5 h-5" />
-                        <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-accent" />
-                    </Button>
+                   
 
                     <Button variant="ghost" size="icon" className="rounded-full">
                         <Avatar className="w-8 h-8">
