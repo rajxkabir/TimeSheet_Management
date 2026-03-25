@@ -16,11 +16,9 @@ export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
 
-    const [theme, setTheme] = useState(() => {
-        return localStorage.getItem("theme") || "light";
-    });
-
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
     // ✅ Theme Logic
@@ -38,36 +36,51 @@ export default function Login() {
         localStorage.setItem("theme", newTheme);
     };
 
+    // ✅ Validation Function
+    const validateForm = () => {
+        const newErrors = {};
+
+        // Email validation
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@arnasoftech\.com$/;
+        if (!username) {
+            newErrors.username = "Email is required";
+        } else if (!emailPattern.test(username)) {
+            newErrors.username = "Email must end with @arnasoftech.com";
+        }
+
+        // Password validation
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,15}$/;
+        if (!password) {
+            newErrors.password = "Password is required";
+        } else if (!passwordPattern.test(password)) {
+            newErrors.password = "Password must be 8-15 characters, include uppercase, lowercase, number, and special character";
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (username && password) {
+        if (validateForm()) {
             navigate("/dashboard");
-        } else {
-            alert("Please fill all fields");
         }
     };
 
     return (
-        /* ✅ WRAPPER: Fixed height and hidden overflow to remove scroll instantly */
         <div className="h-screen w-screen bg-background flex flex-col selection:bg-accent/30 overflow-hidden">
-
-            {/* ✅ NAVBAR: Fixed at the top */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-xl border-b border-border/50">
                 <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-
-                    {/* ✨ LOGO */}
                     <div className="flex items-center gap-2.5 cursor-pointer group w-32">
                         <div className="relative w-8 h-8 rounded-lg bg-foreground flex items-center justify-center transition-all duration-500 group-hover:rotate-[10deg] group-hover:scale-110 shadow-lg shadow-foreground/10">
                             <Clock className="w-4 h-4 text-background" />
                             <div className="absolute inset-0 rounded-lg bg-blue-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
-
                         <span className="text-lg font-bold tracking-tight text-foreground transition-all duration-500 group-hover:text-blue-500">
                             Trackora
                         </span>
                     </div>
-
-                    {/* THEME TOGGLE */}
                     <button
                         onClick={toggleTheme}
                         className="p-2 rounded-xl border border-border bg-secondary/50 transition-all duration-300 hover:bg-secondary hover:scale-105 active:scale-95"
@@ -77,28 +90,15 @@ export default function Login() {
                 </div>
             </nav>
 
-            {/* ✅ MAIN CONTENT 
-                1. pt-24 creates a nice gap from the fixed navbar (14 + 10 extra).
-                2. justify-center keeps the form balanced in the remaining space.
-            */}
             <main className="flex-1 flex flex-col items-center justify-center px-6 pt-24 pb-10 relative">
-
-                {/* BACKGROUND AMBIENCE */}
                 <div className="absolute inset-0 -z-10 overflow-hidden">
                     <div className="absolute top-[10%] left-[15%] w-[400px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full" />
                     <div className="absolute bottom-[10%] right-[15%] w-[350px] h-[350px] bg-cyan-500/10 blur-[100px] rounded-full" />
                 </div>
 
-                {/* ✅ GLOWING FORM CARD */}
                 <div className="group relative w-full max-w-[400px]">
-                    {/* External Glow Trail */}
                     <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-[30px] blur opacity-0 group-hover:opacity-20 transition duration-500" />
-
-                    <div className="relative w-full p-8 rounded-3xl border border-border/50 bg-card/40 backdrop-blur-2xl shadow-2xl
-                                    overflow-hidden transition-all duration-500
-                                    mt-5">
-
-                        {/* Header Section */}
+                    <div className="relative w-full p-8 rounded-3xl border border-border/50 bg-card/40 backdrop-blur-2xl shadow-2xl overflow-hidden transition-all duration-500 mt-5">
                         <div className="flex flex-col items-center mb-8">
                             <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center mb-4 ring-1 ring-accent/20">
                                 <Lock className="w-5 h-5 text-accent" />
@@ -111,27 +111,27 @@ export default function Login() {
                             </p>
                         </div>
 
-                        {/* Login Form */}
                         <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
                             <div className="space-y-2">
-                                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest ml-1">Username</label>
+                                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest ml-1">Email</label>
                                 <div className="relative">
                                     <User className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
                                     <Input
                                         type="text"
-                                        placeholder="Username"
+                                        placeholder="Email"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
                                         className={"pl-10 h-11 bg-background/50 border-border/60 focus:ring-2 focus:ring-blue-500/20 transition-all " +
                                             (username ? "ring-1 ring-blue-500/20" : "")}
                                     />
                                 </div>
+                                {errors.username && <p className="text-red-500 text-xs ml-1">{errors.username}</p>}
                             </div>
 
                             <div className="space-y-2">
                                 <div className="flex justify-between items-center ml-1">
                                     <label className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Password</label>
-                                    <span className="text-[11px] text-blue-500 font-medium hover:underline cursor-pointer">Forgot?</span>
+                                  
                                 </div>
                                 <div className="relative">
                                     <Lock className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
@@ -151,6 +151,7 @@ export default function Login() {
                                         {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                                     </button>
                                 </div>
+                                {errors.password && <p className="text-red-500 text-xs ml-1">{errors.password}</p>}
                             </div>
 
                             <Button
@@ -162,17 +163,7 @@ export default function Login() {
                             </Button>
                         </form>
 
-                        {/* Footer Links */}
-                        <div className="mt-8 pt-6 border-t border-border/50 text-center relative z-10">
-                            <p className="text-sm text-muted-foreground">
-                                Don't have an account?{" "}
-                                <span className="text-foreground font-bold hover:text-blue-500 cursor-pointer transition-colors">
-                                    Create one
-                                </span>
-                            </p>
-                        </div>
 
-                        {/* ✨ Animated Bottom Glow Line */}
                         <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-blue-500 to-cyan-400 group-hover:w-full transition-all duration-700" />
                     </div>
                 </div>

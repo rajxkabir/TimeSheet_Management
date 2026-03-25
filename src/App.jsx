@@ -18,6 +18,8 @@ import { Team } from "./components/views/Team";
 import { Reports } from "./components/views/Reports";
 import { cn } from "./lib/utils";
 import Login from "./components/Login";
+import AddEmployeePage from "./components/Admin/AddEmployee";
+
 
 /* ================= LAYOUT ================= */
 function AppLayout() {
@@ -72,6 +74,8 @@ function AppLayout() {
                         <Route path="/projects" element={<Projects />} />
                         <Route path="/team" element={<Team />} />
                         <Route path="/reports" element={<Reports />} />
+
+                        <Route path="/add-employee" element={<AddEmployeePage />} />
 
                         {/* Default fallback */}
                         <Route path="*" element={<Navigate to="/" />} />
