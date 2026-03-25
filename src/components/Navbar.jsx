@@ -1,10 +1,9 @@
 ﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Clock, Bell, Search, Menu, X, LogOut, Sun, Moon } from "lucide-react";
-import { Button, Input, Avatar, AvatarFallback } from "./ui";
+import { Clock, Menu, X, LogOut, Sun, Moon } from "lucide-react";
+import { Button, Avatar, AvatarFallback } from "./ui";
 
 export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
-    const [searchOpen, setSearchOpen] = useState(false);
     const [theme, setTheme] = useState(() => {
         return localStorage.getItem("theme") || "light";
     });
@@ -39,9 +38,9 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 h-14 border-b border-border/40 bg-background/80 backdrop-blur-xl">
-
             <div className="flex h-full items-center justify-between px-4 md:px-6">
 
+                {/* LEFT SECTION: Menu & Logo */}
                 <div className="flex items-center gap-4">
                     <Button
                         variant="ghost"
@@ -49,11 +48,7 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
                         onClick={onMenuClick}
                         className="md:hidden"
                     >
-                        {isSidebarOpen ? (
-                            <X className="w-5 h-5" />
-                        ) : (
-                            <Menu className="w-5 h-5" />
-                        )}
+                        {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                     </Button>
 
                     <div className="flex items-center gap-2">
@@ -66,27 +61,8 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
                     </div>
                 </div>
 
-                <div className="hidden flex-1 max-w-md mx-8 md:block">
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 w-4 h-4 -translate-y-1/2 text-muted-foreground" />
-                        <Input
-                            placeholder="Search projects, timesheets..."
-                            className="pl-9 bg-secondary/50 border-0"
-                        />
-                    </div>
-                </div>
-
+                {/* RIGHT SECTION: Actions */}
                 <div className="flex items-center gap-1 md:gap-2">
-
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="md:hidden"
-                        onClick={() => setSearchOpen(!searchOpen)}
-                    >
-                        <Search className="w-5 h-5" />
-                    </Button>
-
                     <Button
                         variant="ghost"
                         size="icon"
@@ -95,8 +71,6 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
                     >
                         {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
                     </Button>
-
-                   
 
                     <Button variant="ghost" size="icon" className="rounded-full">
                         <Avatar className="w-8 h-8">
@@ -116,19 +90,6 @@ export function Navbar({ onMenuClick, isSidebarOpen, user = "John Doe" }) {
                     </Button>
                 </div>
             </div>
-
-            {searchOpen && (
-                <div className={"absolute top-14 left-0 right-0 border-b border-border bg-background p-4 md:hidden"}>
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 w-4 h-4 -translate-y-1/2 text-muted-foreground" />
-                        <Input
-                            placeholder="Search projects, timesheets..."
-                            className="pl-9 bg-secondary/50 border-0"
-                            autoFocus
-                        />
-                    </div>
-                </div>
-            )}
         </header>
     );
 }

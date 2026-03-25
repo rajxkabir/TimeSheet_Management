@@ -1,130 +1,102 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Button, Input } from "../ui";
-import { ArrowLeft, Sun, Moon, Clock, UserPlus } from "lucide-react";
+import { Navbar } from "../Navbar";
 
 export default function AddEmployeePage() {
-    const navigate = useNavigate();
-    const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-
     const [form, setForm] = useState({
-        EMP_FIRSTNAME: "",
-        EMP_LASTNAME: "",
-        EMP_GMAIL: "",
-        EMP_PHONE: "",
-        EMP_ROLE: "",
-        EMP_SALARY: "",
-        EMP_TEAM_ID: "",
-        EMP_PROJECT_ID: "",
-        EMP_LOCATION: "",
-        EMP_CITY: "",
-        EMP_STATE: "",
-        EMP_COUNTRY: "",
-        EMP_AADHAR: "",
-        EMP_PAN: "",
-        EMP_PASSWORD: "",
+        EMP_FIRSTNAME: "", EMP_LASTNAME: "", EMP_GMAIL: "",
+        EMP_PHONE: "", EMP_ROLE: "", EMP_SALARY: "",
+        EMP_TEAM_ID: "", EMP_PROJECT_ID: "", EMP_COUNTRY: "", EMP_STATE: "",
+        EMP_CITY: "",  
+        EMP_AADHAR: "", EMP_PAN: "", EMP_PASSWORD: "",
     });
 
-    const toggleTheme = () => {
-        const newTheme = theme === "light" ? "dark" : "light";
-        setTheme(newTheme);
-        localStorage.setItem("theme", newTheme);
-        document.documentElement.classList.toggle("dark");
-    };
+    // Options for dropdowns
+    const roles = ["Developer", "Tester", "Manager", "TeamLead", "HR"];
+    const teamIds = Array.from({ length: 9 }, (_, i) => 1001 + i); // 1001 to 1009
+    const projectIds = Array.from({ length: 9 }, (_, i) => 5001 + i); // 5001 to 5009
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Form Submitted:", form);
+        console.log(form);
     };
 
     return (
-        <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-            {/* NAVBAR */}
-            <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-border/40 bg-background/60 backdrop-blur-xl flex items-center justify-between px-8">
-                <div className="flex items-center gap-4">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => navigate(-1)}
-                        className="rounded-full hover:bg-accent/20"
-                    >
-                        <ArrowLeft className="w-5 h-5" />
-                    </Button>
-                    <div className="flex items-center gap-2">
-                        <div className="w-9 h-9 flex items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20">
-                            <Clock className="text-primary-foreground w-5 h-5" />
-                        </div>
-                        <span className="font-bold text-xl tracking-tight">Trackora</span>
-                    </div>
+        <div className="min-h-screen bg-background text-foreground">
+            <Navbar user="Admin" />
+
+            <div className="max-w-7xl mx-auto pt-2 px-6 pb-8">
+                <div className="mb-6">
+                    <h1 className="text-4xl font-semibold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent px-1">
+                        Add Employee
+                    </h1>
+                    <p className="mt-1 text-muted-foreground">
+                        Create a new profile and assign initial projects.
+                    </p>
                 </div>
 
-                <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full">
-                    {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                </Button>
-            </header>
+                <form
+                    onSubmit={handleSubmit}
+                    className="relative group overflow-hidden rounded-2xl border border-border bg-card/60 backdrop-blur-xl p-8 shadow-sm transition-all"
+                >
+                    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                        {Object.keys(form).map((key) => {
+                            const label = key.replace("EMP_", "").replace(/_/g, " ");
 
-            {/* MAIN CONTENT */}
-            <main className="pt-28 pb-12 px-6 flex justify-center">
-                <div className="w-full max-w-5xl relative">
-                    {/* Background Decorative Glows */}
-                    <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
-                    <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-accent/10 blur-[100px] rounded-full pointer-events-none" />
+                            // Check if the current field should be a dropdown
+                            const isRole = key === "EMP_ROLE";
+                            const isTeam = key === "EMP_TEAM_ID";
+                            const isProject = key === "EMP_PROJECT_ID";
 
-                    <form
-                        onSubmit={handleSubmit}
-                        className="relative overflow-hidden rounded-3xl border border-border/50 bg-card/40 backdrop-blur-2xl p-8 md:p-12 shadow-2xl"
-                    >
-                        {/* Header Section */}
-                        <div className="col-span-full mb-10">
-                            <div className="flex items-center gap-3 mb-2">
-                                <UserPlus className="w-6 h-6 text-primary" />
-                                <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                                    Add New Employee
-                                </h2>
-                            </div>
-                            <p className="text-muted-foreground">Fill in the details to onboard a new team member.</p>
-                        </div>
-
-                        {/* Input Grid */}
-                        <div className="grid md:grid-cols-2 gap-x-8 gap-y-6">
-                            {Object.keys(form).map((key) => (
-                                <div key={key} className="space-y-2 group">
-                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground ml-1">
-                                        {key.replace("EMP_", "").replace(/_/g, " ")}
+                            return (
+                                <div key={key} className="space-y-2">
+                                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider ml-1">
+                                        {label}
                                     </label>
-                                    <div className="relative">
-                                        <Input
+
+                                    {isRole || isTeam || isProject ? (
+                                        <select
                                             name={key}
-                                            type={key.includes("PASSWORD") ? "password" : "text"}
-                                            placeholder={`Enter ${key.replace("EMP_", "").toLowerCase()}`}
                                             value={form[key]}
                                             onChange={handleChange}
-                                            className="h-12 bg-background/40 border-border/60 backdrop-blur-sm focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 rounded-xl relative z-10"
+                                            className="w-full h-10 px-3 rounded-md bg-background/50 border border-border/50 focus:ring-2 focus:ring-accent outline-none transition-all appearance-none"
+                                        >
+                                            <option value="">Select {label.toLowerCase()}</option>
+                                            {isRole && roles.map(r => <option key={r} value={r}>{r}</option>)}
+                                            {isTeam && teamIds.map(id => <option key={id} value={id}>{id}</option>)}
+                                            {isProject && projectIds.map(id => <option key={id} value={id}>{id}</option>)}
+                                        </select>
+                                    ) : (
+                                        <Input
+                                            name={key}
+                                            value={form[key]}
+                                            onChange={handleChange}
+                                            type={key.includes("PASSWORD") ? "password" : "text"}
+                                            placeholder={`Enter ${label.toLowerCase()}`}
+                                            className="bg-background/50 border-border/50 focus:ring-2 focus:ring-accent transition-all"
                                         />
-                                        {/* Inner Glow Effect on Focus/Hover */}
-                                        <div className="absolute inset-0 rounded-xl bg-primary/5 opacity-0 group-focus-within:opacity-100 blur-md transition-opacity pointer-events-none" />
-                                    </div>
+                                    )}
                                 </div>
-                            ))}
-                        </div>
+                            );
+                        })}
+                    </div>
 
-                        {/* Submit Button */}
-                        <div className="col-span-full flex justify-end mt-12 pt-6 border-t border-border/40">
-                            <Button
-                                type="submit"
-                                className="h-12 px-10 rounded-xl bg-primary text-primary-foreground font-semibold hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-primary/25"
-                            >
-                                Save Employee Profile
-                            </Button>
-                        </div>
-                    </form>
-                </div>
-            </main>
+                    <div className="flex justify-end mt-10 pt-6 border-t border-border/50">
+                        <Button
+                            type="submit"
+                            className="px-10 py-6 rounded-xl bg-gradient-to-br from-accent to-accent/80 hover:scale-105 transition-transform shadow-lg"
+                        >
+                            Save Employee Profile
+                        </Button>
+                    </div>
+
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-gradient-to-r from-transparent via-accent/5 to-transparent" />
+                </form>
+            </div>
         </div>
     );
 }
