@@ -53,7 +53,7 @@ export function Sidebar({ isOpen }) {
                     <div className="p-4">
                         <Button
                             className="w-full gap-2 rounded-xl bg-foreground text-background hover:bg-foreground/90"
-                            onClick={() => navigate("/timesheet")}
+                            onClick={() => navigate("/add-employee")}
                         >
                             <Plus className="w-4 h-4" />
                             New Entry
