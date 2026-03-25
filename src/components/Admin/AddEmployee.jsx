@@ -6,7 +6,7 @@ export default function AddEmployeePage() {
     const [form, setForm] = useState({
         EMP_FIRSTNAME: "", EMP_LASTNAME: "", EMP_GMAIL: "",
         EMP_PHONE: "", EMP_ROLE: "", EMP_SALARY: "",
-        EMP_TEAM_ID: "", EMP_PROJECT_ID: "", EMP_COUNTRY: "", EMP_STATE: "",
+        EMP_COUNTRY: "", EMP_STATE: "",
         EMP_CITY: "",  
         EMP_AADHAR: "", EMP_PAN: "", EMP_PASSWORD: "",
     });
