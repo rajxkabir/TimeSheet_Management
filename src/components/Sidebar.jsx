@@ -17,7 +17,7 @@ const navigation = [
     { id: "timesheet", name: "Timesheet", icon: Clock },
     { id: "projects", name: "Projects", icon: FolderKanban },
     { id: "team", name: "Team", icon: Users },
-    { id: "reports", name: "Reports", icon: FileText },
+    { id: "employees", name: "Employees", icon: FileText },
 ];
 
 
