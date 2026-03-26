@@ -8,15 +8,15 @@ export default function AddEmployeePage() {
         EMP_FIRSTNAME: "", EMP_LASTNAME: "", EMP_GMAIL: "",
         EMP_PHONE: "", EMP_ROLE: "", EMP_SALARY: "",
         EMP_COUNTRY: "", EMP_STATE: "",
-        EMP_CITY: "",  
+        EMP_CITY: "", EMP_ADDRESS: "",
         EMP_AADHAR: "", EMP_PAN: "", EMP_PASSWORD: "",
     });
 
     const [showPassword, setShowPassword] = useState(false);
 
     const roles = ["Developer", "Tester", "Manager", "TeamLead", "HR"];
-    const teamIds = Array.from({ length: 9 }, (_, i) => 1001 + i); 
-    const projectIds = Array.from({ length: 9 }, (_, i) => 5001 + i); 
+    const teamIds = Array.from({ length: 9 }, (_, i) => 1001 + i);
+    const projectIds = Array.from({ length: 9 }, (_, i) => 5001 + i);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -42,7 +42,7 @@ export default function AddEmployeePage() {
                     EMP_FIRSTNAME: "", EMP_LASTNAME: "", EMP_GMAIL: "",
                     EMP_PHONE: "", EMP_ROLE: "", EMP_SALARY: "",
                     EMP_COUNTRY: "", EMP_STATE: "",
-                    EMP_CITY: "",  
+                    EMP_CITY: "", EMP_ADDRESS: "",
                     EMP_AADHAR: "", EMP_PAN: "", EMP_PASSWORD: "",
                 });
             } else {
@@ -100,11 +100,14 @@ export default function AddEmployeePage() {
                                             <>
                                                 <Input
                                                     name={key}
-                                                    value={form[key]}
+                                                    value={form[key]} // This ensures the typed text stays in the field
                                                     onChange={handleChange}
                                                     type={isPassword ? (showPassword ? "text" : "password") : "text"}
                                                     placeholder={`Enter ${label.toLowerCase()}`}
-                                                    className={`h-11 rounded-xl bg-background border-input text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-ring transition-all ${isPassword ? "pr-10" : ""}`}
+                                                    /* Added explicit text-foreground to ensure the typed text 
+                                                       doesn't blend into the background.
+                                                    */
+                                                    className={`h-11 rounded-xl bg-background border-input text-foreground !text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-ring transition-all ${isPassword ? "pr-10" : ""}`}
                                                 />
                                                 {isPassword && (
                                                     <button
